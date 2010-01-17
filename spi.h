@@ -1,6 +1,6 @@
 //
 //	spi.h
-//	SPI support for the AVR line of micro-controllers.
+//	SPI support for the AVR AT90CAN128 micro-controller.
 //
 //	Michael Jean <michael.jean@shaw.ca>
 //
@@ -75,10 +75,11 @@ spi_slave_deselect
 );
 
 //
-//	Write a single byte to the slave.
+//	Write a single byte to the slave. Returns whatever was shifted
+//	in by the slave into the data register.
 //
 
-void
+uint8_t
 spi_putch
 (
 	uint8_t byte
