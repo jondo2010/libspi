@@ -15,7 +15,7 @@ static spi_slave_desc_t slave_descs[8];
 void
 spi_init (void)
 {
-	DDRB |= _BV (PB5) | _BV (PB3);
+	DDRB |= _BV (PB2) | _BV (PB1);
 	SPCR |= _BV (SPE) | _BV (MSTR);
 }
 
