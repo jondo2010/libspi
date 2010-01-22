@@ -13,10 +13,16 @@
 static spi_slave_desc_t slave_descs[8];
 
 void
-spi_init (void)
+spi_init
+(
+	uint8_t	double_rate
+)
 {
 	DDRB |= _BV (PB2) | _BV (PB1);
 	SPCR |= _BV (SPE) | _BV (MSTR);
+
+	if (double_rate)
+		SPSR |= _BV (SPI2X);
 }
 
 void
@@ -33,6 +39,7 @@ spi_setup_slave
 	slave_descs[slave_id].pin 			 = slave_desc->pin;
 	slave_descs[slave_id].select_delay   = slave_desc->select_delay;
 	slave_descs[slave_id].deselect_delay = slave_desc->deselect_delay;
+	slave_descs[slave_id].spi_mode		 = slave_desc->spi_mode;
 }
 
 //
@@ -50,6 +57,8 @@ spi_slave_select
 	uint8_t slave_id
 )
 {
+	SPCR = (SPCR & 0xF3) | slave_descs[slave_id].spi_mode; /// Set the SPI mode
+
 	*(slave_descs[slave_id].port) &= ~_BV (slave_descs[slave_id].pin);
 	_delay_us (slave_descs[slave_id].select_delay);
 }
